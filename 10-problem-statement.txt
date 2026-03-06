@@ -1,0 +1,32 @@
+10 - Problem Statement (Repository Validation Contract)
+
+Purpose
+This document defines the business context, technical requirements, and evaluation criteria that this repository is expected to satisfy.
+It is intentionally company- and role-agnostic.
+
+Business context (generic)
+- Backend systems depend on PostgreSQL and must ship changes frequently without downtime surprises.
+- Reliability requires drills, clear rollback plans, and verifiable processes.
+- Security hygiene must be enforced continuously and be easy to validate.
+
+Technical requirements (what must be true)
+1) Safe, repeatable migrations
+   - A concrete migration system exists (not TODOs).
+   - Migrations support an **expand/contract** workflow and include explicit preconditions.
+   - There is an operational rollback path (even if “demo-only”).
+
+2) Security validation surface
+   - The repository provides a local security validation command that checks for expected hygiene and documentation.
+   - CI includes secret scanning and basic quality gates.
+
+3) Testability with two explicit modes
+   - Tests have two explicit modes:
+     - demo: mocks/fakes only (no Docker, no external calls)
+     - production: real integrations when correctly configured and explicitly acknowledged
+   - If production prerequisites are missing, the runner prints exactly what is missing and how to re-run.
+
+Top 3 pain points this repository must solve
+1) “Schema changes are risky and rollback is undefined.”
+2) “Security is a checklist, not a continuously validated practice.”
+3) “Integration tests fail unclearly without configuration.”
+

@@ -35,3 +35,71 @@ What you get:
 - Add PITR with WAL archiving + periodic restore tests.
 - Add SLOs (p95 query latency, replication lag) and alert thresholds.
 - Add automated migration checks (preflight, locks, backout plan).
+
+## Zero/low-downtime migrations (real, runnable)
+
+This repo includes a minimal migration system under `migrations/` with scripts that:
+- apply migrations idempotently (tracked in `schema_migrations`)
+- support an **expand/contract** workflow with explicit preconditions
+- provide a rollback path for the last migration (demo-only)
+
+Run the migration drill:
+
+```bash
+make up
+make migrate
+make migrate-status
+```
+
+See the runbook: `docs/runbooks/zero-downtime-migrations.md`.
+
+## Security validation (local, demo-safe)
+
+Run the local security hygiene checks:
+
+```bash
+make security-validate
+```
+
+## Test modes (demo vs production)
+
+This repository supports exactly two test execution modes controlled by `TEST_MODE`:
+
+- `demo`: runs **mocked/static** checks only (no Docker, no external calls)
+- `production`: runs **real integration** checks when correctly configured (Docker Compose)
+
+Run demo-mode tests:
+
+```bash
+make test
+```
+
+Run production-mode tests (guarded):
+
+```bash
+PRODUCTION_TESTS_CONFIRM=1 make test-production
+```
+
+If production prerequisites are missing, the runner prints a precise list of what to set/install.
+
+## Sponsorship and authorship
+
+Sponsored by:
+CloudForgeLabs  
+https://cloudforgelabs.ainextstudios.com/  
+support@ainextstudios.com
+
+Built by:
+Freddy D. Alvarez  
+https://www.linkedin.com/in/freddy-daniel-alvarez/
+
+For job opportunities, contact:  
+it.freddy.alvarez@gmail.com
+
+## License
+
+Personal and other non-commercial use is free.
+
+Commercial use requires paid permission. Contact `it.freddy.alvarez@gmail.com`.
+
+Note: the included `LICENSE` is intentionally **not** an OSI-approved open-source license. It is a noncommercial license that aligns with the “personal use free, commercial use paid” model.
